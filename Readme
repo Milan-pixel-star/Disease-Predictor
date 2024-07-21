@@ -1,0 +1,110 @@
+Here's a documentation outline and implementation guide for the "Disease Predictor" project hosted on GitHub.
+
+### Disease Predictor Documentation
+
+#### Overview
+The Disease Predictor is a machine learning project designed to predict diseases based on user input data. It utilizes various machine learning algorithms to analyze symptoms and provide probable disease outcomes.
+
+#### Features
+- Predicts diseases based on symptoms.
+- Utilizes machine learning algorithms like decision trees, random forests, and SVM.
+- User-friendly interface for data input and prediction.
+
+#### Requirements
+- Python 3.7 or later
+- Libraries: pandas, numpy, scikit-learn, flask
+
+#### Installation
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Milan-pixel-star/Disease-Predictor.git
+   cd Disease-Predictor
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+#### Usage
+1. **Run the application:**
+   ```bash
+   python main.py
+   ```
+
+2. **Access the web interface:**
+   Open a web browser and go to `http://localhost:5000`
+
+### Implementation Guide Using VS Code
+
+1. **Setup VS Code:**
+   - Install [Visual Studio Code](https://code.visualstudio.com/).
+   - Install the Python extension for VS Code.
+
+2. **Clone the Repository:**
+   Open VS Code and use the terminal to clone the repository:
+   ```bash
+   git clone https://github.com/Milan-pixel-star/Disease-Predictor.git
+   cd Disease-Predictor
+   ```
+
+3. **Install Dependencies:**
+   - Open the cloned repository in VS Code.
+   - Open a new terminal in VS Code and run:
+     ```bash
+     pip install -r requirements.txt
+     ```
+
+4. **Run the Application:**
+   - In VS Code, navigate to `main.py`.
+   - Run the script by clicking the "Run" button or using the terminal:
+     ```bash
+     python main.py
+     ```
+
+5. **Debugging:**
+   - Set breakpoints in your code by clicking next to the line numbers.
+   - Start debugging by pressing F5 or using the debug icon.
+
+6. **Using the Application:**
+   - After running the application, open your web browser and go to `http://localhost:5000`.
+   - Input the required data and observe the predictions.
+
+### Code Explanation
+
+```python
+# Import necessary libraries
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from flask import Flask, request, jsonify
+
+# Initialize Flask app
+app = Flask(__name__)
+
+# Load dataset and preprocess
+data = pd.read_csv('data/disease_dataset.csv')
+X = data.iloc[:, :-1]
+y = data['disease']
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train model
+model = DecisionTreeClassifier()
+model.fit(X_train, y_train)
+
+# Define prediction route
+@app.route('/predict', methods=['POST'])
+def predict():
+    input_data = [request.json['symptoms']]
+    prediction = model.predict(input_data)
+    return jsonify({'disease': prediction[0]})
+
+# Run Flask app
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+This code provides a simple example of setting up a Flask application to predict diseases using a decision tree classifier. It covers loading data, training the model, and creating a prediction endpoint.
